@@ -1,3 +1,40 @@
-<p>
-	Hello world
-</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Tracking Logs</title>
+</head>
+<body>
+    <h1>Fetch Tracking Logs</h1>
+    <button id="fetchButton">Fetch Data</button>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', fetchTrackingLogs);
+
+        async function fetchTrackingLogs() {
+            const url = 'https://fe-online-gateway.ghn.vn/order-tracking/public-api/client/tracking-logs?order_code=G8PPKTB7';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                // Display the response in the <pre> element
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
